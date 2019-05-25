@@ -1,23 +1,23 @@
-# Form properties and methods
+# Свойства формы и методы
 
-Forms and control elements, such as `<input>` have a lot of special properties and events.
+Формы и элементы управления, такие как `<input>` имеют большое количество специальных свойств и событий.
 
-Working with forms can be much more convenient if we know them.
+Работа с формами может быть более удобной, если мы их знаем.
 
-## Navigation: form and elements
+## Навигация: формы и элементы
 
-Document forms are members of the special collection `document.forms`.
+Document forms принадлежат специальной коллекции `document.forms`.
 
-That's a *named* collection: we can use both the name and the number to get the form.
+Это именованная коллекция: мы можем использовать имя или номер, чтобы обратиться к форме.
 
 ```js no-beautify
-document.forms.my - the form with name="my"
-document.forms[0] - the first form in the document
+document.forms.my - форма с именем "my"
+document.forms[0] - первая форма в документе
 ```
 
-When we have a form, then any element is available in the named collection `form.elements`.
+Когда у нас есть форма, любой элемент доступен в именованной коллекции `form.elements`.
 
-For instance:
+Например:
 
 ```html run height=40
 <form name="my">
@@ -26,19 +26,19 @@ For instance:
 </form>
 
 <script>
-  // get the form
+  // объявляем форму
   let form = document.forms.my; // <form name="my"> element
 
-  // get the element
+  // объявляем элемент
   let elem = form.elements.one; // <input name="one"> element
 
   alert(elem.value); // 1
 </script>
 ```
 
-There may be multiple elements with the same name, that's often the case with radio buttons.
+Может быть множество элементов с одинаковым именем, There may be multiple elements with the same name, что часто в случае с переключателями radio.
 
-In that case `form.elements[name]` is a collection, for instance:
+В таком случае `form.elements[name]` - коллекция, например:
 
 ```html run height=40
 <form>
@@ -55,13 +55,13 @@ alert(ageElems[0].value); // 10, the first input value
 </script>
 ```
 
-These navigation properties do not depend on the tag structure. All elements, no matter how deep they are in the form, are available in `form.elements`.
+Эти свойства навигации не зависят от структуры тегов. Все элементы, не важно, как глубоко они лежат в форме, доступны через`form.elements`.
 
 
-````smart header="Fieldsets as \"subforms\""
-A form may have one or many `<fieldset>` elements inside it. They also support the `elements` property.
+````smart header="Fieldsets как \"subforms\""
+Форма может содержать один или несколько `<fieldset>` элементов внутри неё. У них также есть своство `elements`.
 
-For instance:
+Например:
 
 ```html run height=80
 <body>
@@ -79,7 +79,7 @@ For instance:
     let fieldset = form.elements.userFields;
     alert(fieldset); // HTMLFieldSetElement
 
-    // we can get the input both from the form and from the fieldset
+    // мы может получить input как от элементов <form>, так и от <fieldset>:
     alert(fieldset.elements.login == form.elements.login); // true
 */!*
   </script>
@@ -87,14 +87,14 @@ For instance:
 ```
 ````
 
-````warn header="Shorter notation: `form.name`"
-There's a shorter notation: we can access the element as `form[index/name]`.
+````warn header="Короткое замечание: `form.name`"
+Короткое замечание: мы можем получить доступ к элементу через `form[index/name]`.
 
-Instead of `form.elements.login` we can write `form.login`.
+Вместо `form.elements.login` мы можем написать `form.login`.
 
-That also works, but there's a minor issue: if we access an element, and then change its `name`, then it is still available under the old name (as well as under the new one).
+Это работает так же, но есть небольшая проблема: если мы обратимся к элементу, и потом поменяем его свойство `name`, он по-пережнему будет доступен под старым именем (так же, как и под новым).
 
-That's easy to see in an example:
+Это легко увидеть на примере:
 
 ```html run height=40
 <form id="form">
@@ -102,26 +102,26 @@ That's easy to see in an example:
 </form>
 
 <script>
-  alert(form.elements.login == form.login); // true, the same <input>
+  alert(form.elements.login == form.login); // true, тот же самый <input>
 
-  form.login.name = "username"; // change the name of the input
+  form.login.name = "username"; // меняем свойство name у <input>
 
-  // form.elements updated the name:
-  alert(form.elements.login); // undefined
+  // form.elements обновили name:
+  alert(form.elements.login); // undefined, элемента с таким именем больше нет
   alert(form.elements.username); // input
 
 *!*
-  // the direct access now can use both names: the new one and the old one
+  // с прямым доступом мы можем применять оба имени: как новое, так и старое:
   alert(form.username == form.login); // true
 */!*
 </script>
 ```
 
-That's usually not a problem, because we rarely change names of form elements.
+Обычно это не является проблемой, потому что мы не часто меняем имена элементов формы.
 
 ````
 
-## Backreference: element.form
+## Ссылка на форму element.form
 
 For any element, the form is available as `element.form`. So a form references all elements, and elements
 reference the form.
